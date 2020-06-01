@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
                     , photofile
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent,
+                startActivityForResult(
+                    takePictureIntent,
                     REQUEST_IMAGE_CAPTURE
                 )
                 //                setPic();
