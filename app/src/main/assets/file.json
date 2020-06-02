@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "item": [
+      {
+        "uz": "Mening Vatanim O'zbekiston",
+        "ru": "Мой ....",
+        "en": "My Country is Uzbekistan"
+      }
+    ],
+      "path":["1","2","3","4","5","6","8"]
+  },
+  {
+    "id": 2,
+    "item": [
+      {
+        "uz": "Mening Vatanim O'zbekiston",
+        "ru": "Мой ....",
+        "en": "My Country is Uzbekistan"
+      }
+    ],
+    "path":["1","2","3","4","5","6","8"]
+  },
+  {
+    "id": 3,
+    "item": [
+      {
+        "uz": "Mening Vatanim O'zbekiston",
+        "ru": "Мой ....",
+        "en": "My Country is Uzbekistan"
+      }
+    ],
+    "path":["1","2","3","4","5","6","8"]
+  },
+  {
+    "id": 4,
+    "item": [
+      {
+        "uz": "Mening Vatanim O'zbekiston",
+        "ru": "Мой ....",
+        "en": "My Country is Uzbekistan"
+      }
+    ],
+    "path":["1","2","3","4","5","6","8"]
+  },
+  {
+    "id": 5,
+    "item": [
+      {
+        "uz": "Mening Vatanim O'zbekiston",
+        "ru": "Мой ....",
+        "en": "My Country is Uzbekistan"
+      }
+    ],
+    "path":["1","2","3","4","5","6","8"]
+  }
+]
