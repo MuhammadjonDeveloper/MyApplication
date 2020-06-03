@@ -1,6 +1,6 @@
 package net.city.myapplication.networking
 
-import ke.co.appslab.androidpagingwithcoroutines.networking.ApiEndPoints.BASE_URL
+import net.city.myapplication.networking.ApiEndPoints.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

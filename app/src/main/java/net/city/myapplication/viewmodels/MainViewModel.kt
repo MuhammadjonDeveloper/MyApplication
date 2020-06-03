@@ -6,19 +6,19 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import ke.co.appslab.androidpagingwithcoroutines.repositories.PostsDataSource
-import kotlinx.coroutines.Dispatchers
 import net.city.myapplication.models.AppDatabase
 import net.city.myapplication.models.UserItem
 import net.city.myapplication.models.UserItemDao
-import net.city.myapplication.utils.isOnline
+import net.city.myapplication.networking.ApiClient
+import net.city.myapplication.networking.ApiService
+import net.city.myapplication.repositories.PostsDataSource
+
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    var postsLiveData: LiveData<PagedList<UserItem>>
-
-    //    var postsdataLiveData: LiveData<PagedList<UserItem>>
+    private val postsLiveData: LiveData<PagedList<UserItem>>
+    private val postsdataLiveData: LiveData<PagedList<UserItem>>
     private val userItemDao: UserItemDao
-    private val isConnected by lazy { application.isOnline() }
+    private val apiService = ApiClient.getClient().create(ApiService::class.java)
 
     init {
         userItemDao = AppDatabase.getInstaince(application).userdao()
@@ -26,30 +26,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .setPageSize(10)
             .setEnablePlaceholders(false)
             .build()
+        postsdataLiveData = init(config).build()
         postsLiveData = initializedPagedListBuilder(config).build()
-//        postsdataLiveData=init(config).build()
     }
 
     fun getPosts(): LiveData<PagedList<UserItem>> = postsLiveData
-//    fun getDataPosts(): LiveData<PagedList<UserItem>> = postsdataLiveData
 
+    fun getPostsData(): LiveData<PagedList<UserItem>> = postsdataLiveData
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, UserItem> {
         val dataSourceFactory = object : DataSource.Factory<Int, UserItem>() {
             override fun create(): PostsDataSource {
-                return PostsDataSource(Dispatchers.IO, userItemDao)
+                return PostsDataSource(userItemDao)
             }
         }
-        return if (isConnected) {
-            LivePagedListBuilder(dataSourceFactory, config)
-        } else {
-            val ds = userItemDao.getlist()
-            LivePagedListBuilder(ds, config)
-        }
+        return LivePagedListBuilder(dataSourceFactory, config)
+    }
 
-//    private fun init(config: PagedList.Config):
-//
-//    }
+    private fun init(config: PagedList.Config):
+            LivePagedListBuilder<Int, UserItem> {
+        val ds = userItemDao.getlist()
+        return LivePagedListBuilder(ds, config)
     }
 }

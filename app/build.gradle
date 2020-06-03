@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
     //add paging library
     implementation 'android.arch.paging:runtime:1.0.1'
+    implementation 'com.github.markomilos:paginate:0.5.1'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 }
