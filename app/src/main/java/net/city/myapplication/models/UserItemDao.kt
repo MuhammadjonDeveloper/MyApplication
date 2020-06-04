@@ -5,17 +5,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import net.city.myapplication.models.UserItem
 
 @Dao
 interface UserItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertList(userItem: List<UserItem>)
+    fun insertList(userItem: List<News>)
 
-    @Query("SELECT * FROM useritem")
-    fun getlist():DataSource.Factory<Int, UserItem>
+    @Query("SELECT * FROM News")
+    fun getlist():DataSource.Factory<Int, News>
 
-    @Query("SELECT login FROM useritem")
-    fun getlistString():List<String>
+//    @Query("SELECT login FROM News")
+//    fun getlistString():List<String>
 }
