@@ -1,6 +1,7 @@
 package net.city.myapplication.networking
 
-import net.city.myapplication.models.Response
+import net.city.myapplication.models.BaseObject
+import net.city.myapplication.models.UserItem
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,16 +10,17 @@ import retrofit2.http.Query
 
 interface NetworkService {
 
-    @GET("everything?q=sports&apiKey=aa67d8d98c8e4ad1b4f16dbd5f3be348")
+    @GET("users")
     suspend fun getNews(
+        @Query("q") sort: String,
         @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
-    ): retrofit2.Response<Response>
+        @Query("per_page") pageSize: Int
+    ): retrofit2.Response<BaseObject<UserItem>>
 
     companion object {
         fun getService(): NetworkService {
             val retrofit = Retrofit.Builder()
-                    .baseUrl("https://newsapi.org/v2/")
+                    .baseUrl("https://api.github.com/search/")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()

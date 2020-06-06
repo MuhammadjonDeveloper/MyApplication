@@ -5,36 +5,31 @@ import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import net.city.myapplication.models.News
+import net.city.myapplication.models.UserItem
 import net.city.myapplication.networking.NetworkService
-import net.city.myapplication.viewmodels.State.DONE
-import net.city.myapplication.viewmodels.State.ERROR
+import net.city.myapplication.viewmodels.State.*
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 class NewsDataSource(
     private val networkService: NetworkService,
-    coroutineContext: CoroutineContext
-) : PageKeyedDataSource<Int, News>() {
-
+    coroutineContext: CoroutineContext) : PageKeyedDataSource<Int, UserItem>() {
     var state: MutableLiveData<State> = MutableLiveData()
     private var retryAction: (() -> Any)? = null
     private val job = Job()
     private val scope = CoroutineScope(coroutineContext + job)
-
-
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, News>
+        callback: LoadInitialCallback<Int, UserItem>
     ) {
-        updateState(State.LOADING)
+        updateState(LOADING)
         scope.launch {
             try {
-                val res = networkService.getNews(1, params.requestedLoadSize)
+                val res = networkService.getNews("asc", 1, params.requestedLoadSize)
                 if (res.isSuccessful) {
+                    val data = res.body()!!.items
                     updateState(DONE)
-                    val data = res.body()!!.news
-                    callback.onResult(data, null, 2)
+                    callback.onResult(data, null, 10)
                 } else if (res.code() == 403) {
                     //todo
                 }
@@ -42,20 +37,18 @@ class NewsDataSource(
                 updateState(ERROR)
                 retryAction = { loadInitial(params, callback) }
             }
-
-
         }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, News>) {
-        updateState(State.LOADING)
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, UserItem>) {
+        updateState(LOADING)
         scope.launch {
             try {
-                val res = networkService.getNews(params.key, params.requestedLoadSize)
+                val res = networkService.getNews("asc", params.key, params.requestedLoadSize)
                 if (res.isSuccessful) {
+                    val data = res.body()!!.items
                     updateState(DONE)
-                    val data = res.body()!!.news
-                    callback.onResult(data, params.key + 1)
+                    callback.onResult(data, params.key + 10)
                 } else if (res.code() == 403) {
                     //todo
                 }
@@ -68,9 +61,8 @@ class NewsDataSource(
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, News>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, UserItem>) {
     }
-
     private fun updateState(state: State) {
         this.state.postValue(state)
     }
@@ -79,11 +71,7 @@ class NewsDataSource(
         retryAction?.invoke()
     }
 
-    fun cancel(){
+    fun cancel() {
         job.cancel()
     }
-
-//    private fun setRetry(action: Action) {
-//        retryCompletable = if (action == null) null else Completable.fromAction(action)
-//    }
 }

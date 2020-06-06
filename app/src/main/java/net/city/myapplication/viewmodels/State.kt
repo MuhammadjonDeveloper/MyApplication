@@ -1,5 +1,5 @@
 package net.city.myapplication.viewmodels
 
 enum class State {
-    DONE, LOADING, ERROR
+    DONE, LOADING, ERROR,COMPLETED
 }

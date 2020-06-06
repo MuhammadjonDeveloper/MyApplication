@@ -6,11 +6,10 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import net.city.myapplication.viewmodels.State
-import net.city.myapplication.viewmodels.State.ERROR
-import net.city.myapplication.viewmodels.State.LOADING
 import kotlinx.android.synthetic.main.item_list_footer.view.*
 import net.city.myapplication.R
+import net.city.myapplication.viewmodels.State
+import net.city.myapplication.viewmodels.State.*
 
 class ListFooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

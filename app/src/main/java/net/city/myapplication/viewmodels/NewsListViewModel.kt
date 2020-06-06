@@ -5,14 +5,15 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
-import net.city.myapplication.models.News
+import net.city.myapplication.models.UserItem
 import net.city.myapplication.networking.NetworkService
 
 class NewsListViewModel : ViewModel() {
 
     private val networkService = NetworkService.getService()
-    var newsList: LiveData<PagedList<News>>
+    var newsList: LiveData<PagedList<UserItem>>
     private val pageSize = 5
     private val newsDataSourceFactory: NewsDataSourceFactory
 

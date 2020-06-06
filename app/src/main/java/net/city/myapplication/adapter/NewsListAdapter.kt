@@ -4,22 +4,20 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import net.city.myapplication.models.UserItem
 import net.city.myapplication.viewmodels.State
-import net.city.myapplication.models.News
 
 class NewsListAdapter(private val retry: () -> Unit)
-    : PagedListAdapter<News, RecyclerView.ViewHolder>(NewsDiffCallback) {
-
+    : PagedListAdapter<UserItem, RecyclerView.ViewHolder>(NewsDiffCallback) {
     private val DATA_VIEW_TYPE = 1
     private val FOOTER_VIEW_TYPE = 2
-
     private var state = State.LOADING
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == DATA_VIEW_TYPE) NewsViewHolder.create(parent) else ListFooterViewHolder.create(
-            retry,
-            parent
-        )
+        return if (viewType == DATA_VIEW_TYPE)
+            NewsViewHolder.create(parent)
+        else
+            ListFooterViewHolder.create(retry, parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -33,12 +31,11 @@ class NewsListAdapter(private val retry: () -> Unit)
     }
 
     companion object {
-        val NewsDiffCallback = object : DiffUtil.ItemCallback<News>() {
-            override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
-                return oldItem.title == newItem.title
+        val NewsDiffCallback = object : DiffUtil.ItemCallback<UserItem>() {
+            override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
+                return oldItem.login == newItem.login
             }
-
-            override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
+            override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
                 return oldItem == newItem
             }
         }
@@ -49,9 +46,9 @@ class NewsListAdapter(private val retry: () -> Unit)
     }
 
     private fun hasFooter(): Boolean {
-        return super.getItemCount() != 0 && (state == State.LOADING || state == State.ERROR)
+        return super.getItemCount() != 0 && (state == State.LOADING || state == State.DONE)
     }
-
+    
     fun setState(state: State) {
         this.state = state
         notifyItemChanged(super.getItemCount())

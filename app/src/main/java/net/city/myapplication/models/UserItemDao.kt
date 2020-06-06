@@ -10,10 +10,10 @@ import androidx.room.Query
 interface UserItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertList(userItem: List<News>)
+    fun insertList(userItem: List<UserItem>)
 
-    @Query("SELECT * FROM News")
-    fun getlist():DataSource.Factory<Int, News>
+    @Query("SELECT * FROM useritem")
+    fun getlist(): DataSource.Factory<Int, UserItem>
 
 //    @Query("SELECT login FROM News")
 //    fun getlistString():List<String>
